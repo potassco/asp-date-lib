@@ -9,9 +9,9 @@
 
 
 
-# Interface: Input Predicates
+# Input Predicates
 
-## date_consider/1( (D,M,Y) )
+## `date_consider/1( (D,M,Y) )`
 
 Dates that need to be considered.
 These should be statically defined.
@@ -28,7 +28,7 @@ Define the origin date for relative date computations.
 
 Arguments are as with date_consider/1.
 
-# Interface: Output Predicates
+# Output Predicates
 
 ## date_julian/2( (D,M,Y), JulianDay )
 
