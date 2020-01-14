@@ -11,7 +11,7 @@
 
 # Input Predicates
 
-## `date_consider/1( (D,M,Y) )`
+## date_consider/1( (D,M,Y) )
 
 Dates that need to be considered.
 These should be statically defined.
