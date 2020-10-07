@@ -111,7 +111,7 @@ date_weekday((DIn,MIn,YIn),Weekday) :-
   C = YEffective / 100, % century
   Y = (YEffective-1900) \ 100, % year relative to 1900
   M = MIn-2, % March = 1, December = 10
-  Weekday = (DIn + (13*M-1)/5 + Y + Y/4 + C/4 - 2*C - 1) \ 7.
+  Weekday = (((DIn + (13*M-1)/5 + Y + Y/4 + C/4 - 2*C - 1) \ 7) + 7) \ 7.
 
 % January-February = end months of previous Julian year
 date_weekday((DIn,MIn,YIn),Weekday) :-
@@ -121,7 +121,7 @@ date_weekday((DIn,MIn,YIn),Weekday) :-
   C = YEffective / 100, % century
   Y = (YEffective-1900) \ 100, % year relative to 1900
   M = MIn+10, % January = 11, February = 12
-  Weekday = (DIn + (13*M-1)/5 + Y + Y/4 + C/4 - 2*C - 1) \ 7.
+  Weekday = (((DIn + (13*M-1)/5 + Y + Y/4 + C/4 - 2*C - 1)\ 7) + 7) \ 7.
 
 %
 % relative day numbers
@@ -142,6 +142,11 @@ date_relative((D,M,Y),Julian-OJulian) :-
 %date_consider((16,2,2019)).
 %:~ not date_julian((16,2,2019),2458530).[1]
 %:~ not date_weekday((16,2,2019),5).[1]
+
+%% Testcase 1.3.2020 = Sunday
+%date_origin((1,1,2018)).
+%date_consider((1,3,2020)).
+%:~ not date_weekday((1,3,2020),6).[1]
 
 %% Testcase 25.3.2019 = Monday, Julian Day 2458567.5
 %date_consider((25,3,2019)).
