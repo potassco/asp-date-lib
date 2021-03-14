@@ -135,114 +135,88 @@ date_relative((D,M,Y),Julian-OJulian) :-
   date_julian((OD,OM,OY),OJulian).
 
 %
-<<<<<<< HEAD
-% calculate leap years 
+% Calculate leap years 
 %
 
-is_leap_year(Y) :-  calc_leap(Y), leap1(Y), Y\4 = 0.
-	
-leap1(Y) :- calc_leap(Y), #true : Y\400 = 0; Y\100 != 0.
-leap1(Y) : Y\400 = 0; Y\100 != 0 :- calc_leap(Y).
- 
+is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\400 = 0.
+is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\4 = 0, YYYY\100 != 0.
+
 %
 % Date consider given month
 %
-calc_leap(YYYY) :- date_consider_month(2,YYYY).
+calc_leap_year(YYYY) :- date_consider_month(2,YYYY).
 
-date_consider((1..31,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 1. 
-date_consider((1..28,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 2, not  is_leap_year(YYYY). 
-date_consider((1..29,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 2, is_leap_year(YYYY). 
-date_consider((1..31,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 3. 
-date_consider((1..30,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 4. 
-date_consider((1..31,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 5. 
-date_consider((1..30,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 6. 
-date_consider((1..31,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 7. 
-date_consider((1..31,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 8. 
-date_consider((1..30,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 9. 
-date_consider((1..31,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 10. 
-date_consider((1..30,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 11. 
-date_consider((1..31,MM,YYYY)) :- date_consider_month(MM,YYYY), MM = 12. 
+
+date_consider((1..31,MM,YYYY)) :- 
+	date_consider_month(MM,YYYY), 
+	{MM=1; MM=3; MM=5; MM=7; MM=8; MM=10; MM=12} = 1.
+
+date_consider((1..30,MM,YYYY)) :- 
+	date_consider_month(MM,YYYY), 
+	{MM=4; MM=6; MM=9; MM=11} = 1.
+
+date_consider((1..28,MM,YYYY)) :- 
+	date_consider_month(MM,YYYY), 
+	MM = 2, 
+	not is_leap_year(YYYY). 
+
+date_consider((1..29,MM,YYYY)) :- 
+	date_consider_month(MM,YYYY), 
+	MM = 2, 
+	is_leap_year(YYYY). 
 
 %
 % Date consider given year
 %
-calc_leap(YYYY) :- date_consider_year(YYYY).
+calc_leap_year(YYYY) :- date_consider_year(YYYY).
 
-date_consider((1..31,1,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..28,2,YYYY)) :- date_consider_year(YYYY), not is_leap_year(YYYY).
-date_consider((1..29,2,YYYY)) :- date_consider_year(YYYY), is_leap_year(YYYY).
-date_consider((1..31,3,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..30,4,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..31,5,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..30,6,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..31,7,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..31,8,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..30,9,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..31,10,YYYY)) :- date_consider_year(YYYY).
-date_consider((1..30,11,YYYY)) :- date_consider_year(YYYY).
+
+date_consider((1..31,1,YYYY)),
+date_consider((1..31,3,YYYY)), 
+date_consider((1..30,4,YYYY)),
+date_consider((1..31,5,YYYY)),
+date_consider((1..30,6,YYYY)),
+date_consider((1..31,7,YYYY)),
+date_consider((1..31,8,YYYY)),
+date_consider((1..30,9,YYYY)),
+date_consider((1..31,10,YYYY)),
+date_consider((1..30,11,YYYY)),
 date_consider((1..31,12,YYYY)) :- date_consider_year(YYYY).
 
-%
-% last date of month
-%
+date_consider((1..28,2,YYYY)) :- date_consider_year(YYYY), not is_leap_year(YYYY).
+date_consider((1..29,2,YYYY)) :- date_consider_year(YYYY), is_leap_year(YYYY).
 
-date_consider((31,MM,YYYY)) : MM=1; MM=3; MM=5; MM=7; MM=8; MM=10; MM=12 :- last_date_month(MM,YYYY).
-date_consider((28,2,YYYY)) :- last_date_month(2,YYYY), not is_leap_year(YYYY).
-date_consider((29,2,YYYY)) :- last_date_month(2,YYYY), is_leap_year(YYYY).
-%date_consider((31,MM,YYYY)) : MM=4; MM=6; MM=9; MM=11 :- last_date_month(MM,YYYY).
-
-%date_consider((31,1,YYYY)) :- last_date_month(1,YYYY).
-%*date_consider((28,2,YYYY)) :- last_date_month(2,YYYY), not is_leap_year(YYYY).
-date_consider((29,2,YYYY)) :- last_date_month(2,YYYY), is_leap_year(YYYY).
-date_consider((31,3,YYYY)) :- last_date_month(3,YYYY).
-date_consider((30,4,YYYY)) :- last_date_month(4,YYYY).
-date_consider((31,5,YYYY)) :- last_date_month(5,YYYY).
-date_consider((30,6,YYYY)) :- last_date_month(6,YYYY).
-date_consider((31,7,YYYY)) :- last_date_month(7,YYYY).
-date_consider((31,8,YYYY)) :- last_date_month(8,YYYY).
-date_consider((30,9,YYYY)) :- last_date_month(9,YYYY).
-date_consider((31,10,YYYY)) :- last_date_month(10,YYYY).
-date_consider((30,11,YYYY)) :- last_date_month(11,YYYY).
-date_consider((31,12,YYYY)) :- last_date_month(12,YYYY).
-*%
 %
-% last date of year
+% Last date of month
+%
+calc_leap_year(YYYY) :- last_date_month(2,YYYY).
+
+
+date_consider((31,MM,YYYY)) :- 
+	last_date_month(MM,YYYY), 
+	{MM=1; MM=3; MM=5; MM=7; MM=8; MM=10; MM=12} = 1.
+
+date_consider((30,MM,YYYY)) :- 
+	last_date_month(MM,YYYY), 
+	{MM=4; MM=6; MM=9; MM=11} = 1.
+
+date_consider((28,2,YYYY)) :- 
+	last_date_month(2,YYYY), 
+	not is_leap_year(YYYY).
+
+date_consider((29,2,YYYY)) :- 
+	last_date_month(2,YYYY), 
+	is_leap_year(YYYY).
+
+%
+% Last date of year
 %
 
 date_consider((31,12,YYYY)) :- last_date_year(YYYY).
 
-% TESTING 
-%*
-calc_leap(1804).
-calc_leap(1832).
-calc_leap(1864).
-calc_leap(1880).
-calc_leap(1896).
-calc_leap(1912).
-calc_leap(1940).
-calc_leap(1952).
-calc_leap(2040).
-calc_leap(2060).
-calc_leap(2108).
-calc_leap(2228).
-calc_leap(2272).
-calc_leap(2292).
-calc_leap(2320).
-calc_leap(2324).
-calc_leap(2384).
-calc_leap(2400).
-calc_leap(2003).
-
-erg(X) :- #count{Y : is_leap_year(Y)} = X.
-#show is_leap_year/1.
-#show erg/1.
-*%
-last_date_month(1,2020).
-#show date_consider/1.
 
 %
-=======
->>>>>>> eb569983af57b8f628fb6dfdbf0a346d7ead416c
+%
 % Testcases
 %
 
