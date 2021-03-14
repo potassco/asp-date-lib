@@ -135,6 +135,7 @@ date_relative((D,M,Y),Julian-OJulian) :-
   date_julian((OD,OM,OY),OJulian).
 
 %
+<<<<<<< HEAD
 % calculate leap years 
 %
 
@@ -240,6 +241,8 @@ last_date_month(1,2020).
 #show date_consider/1.
 
 %
+=======
+>>>>>>> eb569983af57b8f628fb6dfdbf0a346d7ead416c
 % Testcases
 %
 
