@@ -138,7 +138,6 @@ date_relative((D,M,Y),Julian-OJulian) :-
 % Calculate leap years 
 %
 calc_leap_year(YYYY) :- date_consider_month(2,YYYY).
-calc_leap_year(YYYY) :- date_consider_year(YYYY).
 
 is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\400 = 0.
 is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\4 = 0, YYYY\100 != 0.
