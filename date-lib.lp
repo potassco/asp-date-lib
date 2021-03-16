@@ -178,6 +178,7 @@ date_consider((1..DD,MM,YYYY)) :-
 
 date_consider_month(1..12,YYYY) :- date_consider_year(YYYY).
 
+
 %
 %
 % Testcases

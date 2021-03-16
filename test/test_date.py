@@ -13,7 +13,7 @@ def run(instance):
         m.answer = model.symbols(atoms=True)
         m.cost = model.cost
     ctl.configuration.solve.models="0"
-    ctl.load("./date-lib.lp")
+    ctl.load("../date-lib.lp")
     ctl.load(instance)
 
     ctl.ground([("base",[])])
@@ -34,7 +34,7 @@ def test_date_consider_month():
     assert({clingo.parse_term("date_consider((28,2,2021))")} <= answer)
     assert({clingo.parse_term("date_consider((29,2,2021))")} != answer)
     assert({clingo.parse_term("date_consider((30,2,2021))")} != answer)
-  #  assert({clingo.parse_term("date_consider((30,4,2021))")} <= answer)
+    assert({clingo.parse_term("date_consider((30,4,2021))")} <= answer)
     assert({clingo.parse_term("date_consider((31,4,2021))")} != answer)
 
     answer = set(run("date_consider_month_3.lp").answer)
