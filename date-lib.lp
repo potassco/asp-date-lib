@@ -137,83 +137,47 @@ date_relative((D,M,Y),Julian-OJulian) :-
 %
 % Calculate leap years 
 %
+calc_leap_year(YYYY) :- date_consider_month(2,YYYY).
+calc_leap_year(YYYY) :- date_consider_year(YYYY).
 
 is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\400 = 0.
 is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\4 = 0, YYYY\100 != 0.
 
 %
-% Date consider given month
+% Calculate last date of month
 %
-calc_leap_year(YYYY) :- date_consider_month(2,YYYY).
+big_month(1;3;5;7;8;10;12).
+small_month(4;6;9;11).
 
-
-date_consider((1..31,MM,YYYY)) :- 
+last_date_month(31,MM,YYYY) :- 
 	date_consider_month(MM,YYYY), 
-	{MM=1; MM=3; MM=5; MM=7; MM=8; MM=10; MM=12} = 1.
+	big_month(MM).
 
-date_consider((1..30,MM,YYYY)) :- 
+last_date_month(30,MM,YYYY) :- 
 	date_consider_month(MM,YYYY), 
-	{MM=4; MM=6; MM=9; MM=11} = 1.
+	small_month(MM).
 
-date_consider((1..28,MM,YYYY)) :- 
-	date_consider_month(MM,YYYY), 
-	MM = 2, 
-	not is_leap_year(YYYY). 
-
-date_consider((1..29,MM,YYYY)) :- 
-	date_consider_month(MM,YYYY), 
-	MM = 2, 
-	is_leap_year(YYYY). 
-
-%
-% Date consider given year
-%
-calc_leap_year(YYYY) :- date_consider_year(YYYY).
-
-
-date_consider((1..31,1,YYYY)),
-date_consider((1..31,3,YYYY)), 
-date_consider((1..30,4,YYYY)),
-date_consider((1..31,5,YYYY)),
-date_consider((1..30,6,YYYY)),
-date_consider((1..31,7,YYYY)),
-date_consider((1..31,8,YYYY)),
-date_consider((1..30,9,YYYY)),
-date_consider((1..31,10,YYYY)),
-date_consider((1..30,11,YYYY)),
-date_consider((1..31,12,YYYY)) :- date_consider_year(YYYY).
-
-date_consider((1..28,2,YYYY)) :- date_consider_year(YYYY), not is_leap_year(YYYY).
-date_consider((1..29,2,YYYY)) :- date_consider_year(YYYY), is_leap_year(YYYY).
-
-%
-% Last date of month
-%
-calc_leap_year(YYYY) :- last_date_month(2,YYYY).
-
-
-date_consider((31,MM,YYYY)) :- 
-	last_date_month(MM,YYYY), 
-	{MM=1; MM=3; MM=5; MM=7; MM=8; MM=10; MM=12} = 1.
-
-date_consider((30,MM,YYYY)) :- 
-	last_date_month(MM,YYYY), 
-	{MM=4; MM=6; MM=9; MM=11} = 1.
-
-date_consider((28,2,YYYY)) :- 
-	last_date_month(2,YYYY), 
+last_date_month(28,2,YYYY) :- 
+	date_consider_month(2,YYYY), 
 	not is_leap_year(YYYY).
 
-date_consider((29,2,YYYY)) :- 
-	last_date_month(2,YYYY), 
+last_date_month(29,2,YYYY) :- 
+	date_consider_month(2,YYYY), 
 	is_leap_year(YYYY).
 
 %
-% Last date of year
+% date_consider given month
 %
 
-date_consider((31,12,YYYY)) :- last_date_year(YYYY).
+date_consider((1..DD,MM,YYYY)) :-
+	date_consider_month(MM,YYYY),	
+	last_date_month(DD,MM,YYYY).
 
+%
+% date_consider given year
+%
+
+date_consider_month(1..12,YYYY) :- date_consider_year(YYYY).
 
 %
 %
