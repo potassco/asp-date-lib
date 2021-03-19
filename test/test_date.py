@@ -21,7 +21,7 @@ def run(instance):
     return m
 
 def test_date_consider_month():
-    answer = set(run("date_consider_month_1.lp").answer)
+    answer = set(run("date_consider_month_2020.lp").answer)
     assert({clingo.parse_term("date_consider((31,1,2020))")} <= answer)
     assert({clingo.parse_term("date_consider((28,2,2020))")} <= answer)
     assert({clingo.parse_term("date_consider((29,2,2020))")} <= answer)
@@ -29,15 +29,14 @@ def test_date_consider_month():
     assert({clingo.parse_term("date_consider((30,4,2020))")} <= answer)
     assert({clingo.parse_term("date_consider((31,4,2020))")} != answer)
 
-    answer = set(run("date_consider_month_2.lp").answer)
+    answer = set(run("date_consider_month_2021.lp").answer)
     assert({clingo.parse_term("date_consider((31,1,2021))")} <= answer)
     assert({clingo.parse_term("date_consider((28,2,2021))")} <= answer)
     assert({clingo.parse_term("date_consider((29,2,2021))")} != answer)
     assert({clingo.parse_term("date_consider((30,2,2021))")} != answer)
-    assert({clingo.parse_term("date_consider((30,4,2021))")} <= answer)
     assert({clingo.parse_term("date_consider((31,4,2021))")} != answer)
 
-    answer = set(run("date_consider_month_3.lp").answer)
+    answer = set(run("date_consider_month_2004.lp").answer)
     assert({clingo.parse_term("date_consider((31,1,2004))")} <= answer)
     assert({clingo.parse_term("date_consider((28,2,2004))")} <= answer)
     assert({clingo.parse_term("date_consider((29,2,2004))")} <= answer)
@@ -46,11 +45,11 @@ def test_date_consider_month():
     assert({clingo.parse_term("date_consider((31,4,2004))")} != answer)
 
 def test_is_leap_year():
-    answer = set(run("date_consider_month_1.lp").answer)
+    answer = set(run("date_consider_month_2020.lp").answer)
     assert({clingo.parse_term("is_leap_year(2020)")} <= answer)
     
-    answer = set(run("date_consider_month_2.lp").answer)
+    answer = set(run("date_consider_month_2021.lp").answer)
     assert({clingo.parse_term("is_leap_year(2021)")} != answer)
     
-    answer = set(run("date_consider_month_3.lp").answer)
+    answer = set(run("date_consider_month_2004.lp").answer)
     assert({clingo.parse_term("is_leap_year(2004)")} <= answer)
