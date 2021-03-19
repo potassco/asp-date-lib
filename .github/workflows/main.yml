@@ -36,4 +36,4 @@ jobs:
         conda list
     - name: build and test
       shell: pwsh
-      run: cd tests && pytest
+      run: python -m pytest tests/
