@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: shift_planning ${{ matrix.python-version }} ${{ matrix.os }}
+    name: date_consider ${{ matrix.python-version }} ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
