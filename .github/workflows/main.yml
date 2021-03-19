@@ -1,0 +1,39 @@
+name: tests
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    name: shift_planning ${{ matrix.python-version }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest', 'windows-2016', 'windows-2019']
+        python-version: ['3.7']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: setup miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+        activate-environment: shift
+        channels: potassco/label/dev,conda-forge
+
+    - name: install prerequisites
+      shell: pwsh
+      run: conda install clingo pytest
+
+    - name: print info
+      shell: pwsh
+      run: |
+        conda info
+        conda list
+    - name: build and test
+      shell: pwsh
+      run: cd tests && pytest
