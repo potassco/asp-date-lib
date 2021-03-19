@@ -31,7 +31,7 @@ jobs:
     
     - name: clingo check
       shell: pwsh
-      run: clingo --version
+      run: python -i import clingo
     
     - name: print info
       shell: pwsh
@@ -41,4 +41,4 @@ jobs:
 
     - name: build and test
       shell: pwsh
-      run: cd tests && pytest
+      run: cd tests && python -m pytest
