@@ -29,14 +29,6 @@ jobs:
       shell: pwsh
       run: conda install clingo pytest
     
-    - name: clingo check
-      shell: pwsh
-      run: python -i clingo
-    
-    - name: pythonpath
-      shell: pwsh
-      run: python -c "import sys; print(sys.path)"
-
     - name: print info
       shell: pwsh
       run: |
