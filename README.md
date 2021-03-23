@@ -4,6 +4,7 @@
 * Dates are represented as tuple terms (D,M,Y).
 * Library converts absolute dates into relative dates.
 * Library finds out the weekday of a date.
+* Library can create date tuples for every day in a given month or year.
 * Day differences are realized using Julian Day Numbers, see http://quasar.as.utexas.edu/BillInfo/JulianDatesG.html .
 * Week days are realized using a formula from https://de.wikipedia.org/wiki/Wochentagsberechnung
 
@@ -11,7 +12,26 @@
 
 # Input Predicates
 
+## date_consider_month/2( M, Y )
+
+Creates all dates of the given month in the given year that need to be considered.
+
+|Argument | Domain                     | Note          |
+|:--------|:---------------------------|:--------------|
+| M       | number (1-12)              | Month
+| Y       | number (1XXX-2XXX)         | Year
+
+## date_consider_year/2( Y )
+
+Creates all dates of the given year that need to be considered.
+
+|Argument | Domain                     | Note          |
+|:--------|:---------------------------|:--------------|
+| Y       | number (1XXX-2XXX)         | Year
+
 ## date_consider/1( (D,M,Y) )
+
+It is recommended to use date_consider_month/2 or date_consider_year/1, because it prevents the accidental creation of 'illegal' dates i.e. 29th of February in a non leap year.
 
 Dates that need to be considered.
 These should be statically defined.
