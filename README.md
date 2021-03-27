@@ -29,7 +29,7 @@ Creates all dates of the given year that need to be considered.
 |:--------|:---------------------------|:--------------|
 | Y       | number (1XXX-2XXX)         | Year
 
-##(deprecated) date_consider/1( (D,M,Y) )
+## (deprecated) date_consider/1( (D,M,Y) )
 
 Do not use! It allows the creation of illegal dates i.e. 29th of February in a non leap year.
 It is recommended to use date_consider_month/2 or date_consider_year/1
