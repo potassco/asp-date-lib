@@ -29,9 +29,10 @@ Creates all dates of the given year that need to be considered.
 |:--------|:---------------------------|:--------------|
 | Y       | number (1XXX-2XXX)         | Year
 
-## date_consider/1( (D,M,Y) )
+##(deprecated) date_consider/1( (D,M,Y) )
 
-It is recommended to use date_consider_month/2 or date_consider_year/1, because it prevents the accidental creation of 'illegal' dates i.e. 29th of February in a non leap year.
+Do not use! It allows the creation of illegal dates i.e. 29th of February in a non leap year.
+It is recommended to use date_consider_month/2 or date_consider_year/1
 
 Dates that need to be considered.
 These should be statically defined.
