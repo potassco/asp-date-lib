@@ -32,7 +32,7 @@ Creates all dates of the given year that need to be considered.
 ## (deprecated) date_consider/1( (D,M,Y) )
 
 Do not use! It allows the creation of illegal dates i.e. 29th of February in a non leap year.
-It is recommended to use date_consider_month/2 or date_consider_year/1
+It is recommended to use date_consider_month/2 or date_consider_year/1.
 
 Dates that need to be considered.
 These should be statically defined.
@@ -87,4 +87,15 @@ Mapping from considered dates to weekdays.
 | Days    | number (0-6)               | Weekday
 
 Weekdays are as follows: 0/Monday, ..., 6/Sunday
+
+## last_date_month/3( D,M,Y )
+
+Gives the last date of a given month and year. 
+
+|Argument | Domain                     | Note          |
+|:--------|:---------------------------|:--------------|
+| D       | number (1-31)              | Day of Month
+| M       | number (1-12)              | Month
+| Y       | number (1XXX-2XXX)         | Year
+
 
