@@ -1,74 +1,3 @@
-%*
-
-# Library for dates
-
-* Dates are represented as tuple terms (D,M,Y).
-* Library converts absolute dates into relative dates.
-* Library finds out the weekday of a date.
-* No need to use Python.
-* Day differences are realized using Julian Day Numbers, see http://quasar.as.utexas.edu/BillInfo/JulianDatesG.html .
-* Week days are realized using a formula from https://de.wikipedia.org/wiki/Wochentagsberechnung
-
-# Interface: Input Predicates
-
-## date_consider/1( (D,M,Y) )
-
-Dates that need to be considered.
-These should be statically defined.
-
-|Argument | Domain                     | Note          |
-|:--------|:---------------------------|:--------------|
-| D       | number (1-31)              | Day of Month
-| M       | number (1-12)              | Month
-| Y       | number (1XXX-2XXX)         | Year
-
-## date_origin/1( (D,M,Y) )
-
-Define the origin date for relative date computations.
-
-Arguments are as with date_consider/1.
-
-# Interface: Output Predicates
-
-## date_julian/2( (D,M,Y), JulianDay )
-
-Mapping from considered dates to Julian Day number (number of days since 1st of January -4712).
-
-Remark: the "half day" of Julian Day computation is omitted. This preserves correctness of relative day counts.
-
-|Argument   | Domain                     | Note          |
-|:----------|:---------------------------|:--------------|
-| D         | number (1-31)              | Day of Month
-| M         | number (1-12)              | Month
-| Y         | number (1XXX-2XXX)         | Year
-| JulianDay | positive number            | Number of Days since 1st of January -4712
-
-## date_relative/2( (D,M,Y), Days )
-
-Mapping from considered dates to relative number of days with respect to the date given via date_origin.
-
-|Argument | Domain                     | Note          | 
-|:--------|:---------------------------|:--------------|
-| D       | number (1-31)              | Day of Month
-| M       | number (1-12)              | Month
-| Y       | number (1XXX-2XXX)         | Year
-| Days    | number (no restriction)    | Number of Days
-
-## date_weekday/2( (D,M,Y), Weekday )
-
-Mapping from considered dates to weekdays.
-
-|Argument | Domain                     | Note          |
-|:--------|:---------------------------|:--------------|
-| D       | number (1-31)              | Day of Month
-| M       | number (1-12)              | Month
-| Y       | number (1XXX-2XXX)         | Year
-| Days    | number (0-6)               | Weekday
-
-Weekdays are as follows: 0/Monday, ..., 6/Sunday
-
-*%
-
 %
 % Julian Day Numbers
 %
@@ -135,30 +64,49 @@ date_relative((D,M,Y),Julian-OJulian) :-
   date_julian((OD,OM,OY),OJulian).
 
 %
-% Testcases
+% Calculate leap years 
 %
 
-%% Testcase 16.2.2019 = Saturday, Julian Day 2458530.5
-%date_consider((16,2,2019)).
-%:~ not date_julian((16,2,2019),2458530).[1]
-%:~ not date_weekday((16,2,2019),5).[1]
+calc_leap_year(YYYY) :- date_consider_month(2,YYYY).
 
-%% Testcase 1.3.2020 = Sunday
-%date_origin((1,1,2018)).
-%date_consider((1,3,2020)).
-%:~ not date_weekday((1,3,2020),6).[1]
+is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\400 = 0.
+is_leap_year(YYYY) :- calc_leap_year(YYYY), YYYY\4 = 0, YYYY\100 != 0.
 
-%% Testcase 25.3.2019 = Monday, Julian Day 2458567.5
-%date_consider((25,3,2019)).
-%:~ not date_julian((25,3,2019),2458567).[1]
-%:~ not date_weekday((25,3,2019),0).[1]
+%
+% Calculate last date of month
+%
 
-%% Testcase Origin 1.1.2018, dates 16.2.2019 (411 days later), 25.3.2019 (448 days later), 19.6.2017 (196 days before). 
-%date_origin((1,1,2018)).
-%date_consider((16,2,2019)).
-%date_consider((25,3,2019)).
-%date_consider((19,6,2017)).
-%:~ not date_relative((16,2,2019),411).[1]
-%:~ not date_relative((25,3,2019),448).[1]
-%:~ not date_relative((19,6,2017),-196).[1]
+big_month(1;3;5;7;8;10;12).
+small_month(4;6;9;11).
+
+last_date_month(31,MM,YYYY) :- 
+	date_consider_month(MM,YYYY), 
+	big_month(MM).
+
+last_date_month(30,MM,YYYY) :- 
+	date_consider_month(MM,YYYY), 
+	small_month(MM).
+
+last_date_month(28,2,YYYY) :- 
+	date_consider_month(2,YYYY), 
+	not is_leap_year(YYYY).
+
+last_date_month(29,2,YYYY) :- 
+	date_consider_month(2,YYYY), 
+	is_leap_year(YYYY).
+
+%
+% Generate date_consider/1 for a given month/year
+%
+
+date_consider((1..DD,MM,YYYY)) :-
+	date_consider_month(MM,YYYY),	
+	last_date_month(DD,MM,YYYY).
+
+%
+% Generate date_consider/1 for a given year
+%
+
+date_consider_month(1..12,YYYY) :- date_consider_year(YYYY).
+
 
